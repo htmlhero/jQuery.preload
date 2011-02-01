@@ -1,9 +1,9 @@
 **jQuery.preload &mdash; jQuery plugin for images preloading**
 
-##How to use?
+##Example 1
 
 	$.preload(sources, part, callback);
 	
-or
+##Example 2
 	
 	$('#elem').preload(callback);
