@@ -1,4 +1,4 @@
-**jQuery.preload - jQuery plugin for images preloading**
+**jQuery.preload &mdash; jQuery plugin for images preloading**
 
 ##How to use?
 
