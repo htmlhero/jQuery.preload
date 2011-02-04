@@ -1,5 +1,5 @@
 /* jQuery.Preload
- * Created by Andrew Motoshin 2010 (http://htmlhero.ru)
+ * Created by Andrew Motoshin (http://htmlhero.ru)
  * 
  * Version: 1.1.1
  * Requires: jQuery 1.4+
@@ -100,12 +100,10 @@
 			url = reg.exec(this.style.backgroundImage);
 
 			if (url) {
-				// console.log(url[1]);
 				sources.push(url[1]);
 			}
 
 			if (this.nodeName === 'IMG') {
-				// console.log(this.src);
 				sources.push(this.src);
 			}
 
