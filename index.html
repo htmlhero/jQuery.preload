@@ -16,7 +16,7 @@
 				'http://farm3.static.flickr.com/2652/4112396574_8e9f7d81a1_b.jpg'
 			];
 
-			$.preload(images, 2, function(last){
+			$.preload(images, 1, function(last){
 
 				for (var i = 0; i < this.length; i++) {
 					$('<img height="200" src="' + this[i] + '" alt="" />').appendTo('body');
