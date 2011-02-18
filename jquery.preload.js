@@ -1,7 +1,7 @@
 /* jQuery.Preload
  * Created by Andrew Motoshin (http://htmlhero.ru)
- * 
- * Version: 1.1.1
+ *
+ * Version: 1.2.0
  * Requires: jQuery 1.4+
  *
  */
@@ -13,13 +13,14 @@
 		var cache = [],
 			caching = function(image){
 				for (var i = 0; i < cache.length; i++) {
-					if (cache[i].src === image.src) {
-						return;
+					if (cache[i][0].src === image[0].src) {
+						return cache[i];
 					}
 				}
 				cache.push(image);
+				return image;
 			},
-			proxy = function(sources, last, callback){
+			proxy = function(sources, callback, last){
 				if ($.isFunction(callback)) {
 					callback.call(sources, last);
 				}
@@ -40,33 +41,28 @@
 				part = 0;
 			}
 
-			var total = sources.length,
-				self = arguments.callee,
-				save = null,
+			var self = arguments.callee,
+				total = sources.length,
 				loaded = 0,
-				image;
+				next, image;
 
 			var imageLoaded = function(){
 				loaded++;
 				if (loaded === total) {
-					if (save) {
-						proxy(sources, false, callback);
-						self(save, part, callback);
-					} else {
-						proxy(sources, true, callback);
-					}
+					proxy(sources, callback, !next);
+					self(next, part, callback);
 				}
 			};
 
 			if (part > 0 && part < total) {
-				save = sources.slice(part, total);
+				next = sources.slice(part, total);
 				sources = sources.slice(0, part);
 			}
 
 			total = sources.length;
 
 			if (!total) {
-				proxy(sources, true, callback);
+				proxy(sources, callback, true);
 			}
 
 			for (var i = 0; i < total; i++) {
@@ -74,12 +70,16 @@
 				image = new Image();
 				image.src = sources[i];
 
-				caching(image);
+				image = $(image);
+				image = caching(image);
 
-				if (image.complete) {
+				if (image[0].complete) {
 					imageLoaded();
 				} else {
-					image.onload = image.onerror = imageLoaded;
+					image.bind({
+						load: imageLoaded,
+						error: imageLoaded
+					});
 				}
 
 			}
@@ -93,11 +93,12 @@
 		var items = this,
 			sources = [],
 			reg = new RegExp('url\\([\'"]?([^"\'\)]*)[\'"]?\\)', 'i'),
-			url;
+			background, url;
 
 		this.find('*').add(this).each(function(){
 
-			url = reg.exec(this.style.backgroundImage);
+			background = $(this).css('backgroundImage');
+			url = reg.exec(background);
 
 			if (url) {
 				sources.push(url[1]);

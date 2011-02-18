@@ -3,22 +3,20 @@
 <head>
 	<title>Demo</title>
 	<meta charset="utf-8" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery.preload.js"></script>
 	<script type="text/javascript">
 
 		$(function(){
 
 			var images = [
-				'http://farm3.static.flickr.com/2316/2386762190_84fcb7f2a9_o.jpg',
 				'http://farm4.static.flickr.com/3219/2431886567_c92821aede_o.jpg',
 				'http://farm1.static.flickr.com/37/85684217_526797a103_o.jpg',
-				'http://farm4.static.flickr.com/3656/3354452572_78fb4c3a0d_o.jpg',
-				'http://farm3.static.flickr.com/2658/4216369204_2659f8fe2c_o.jpg',
-				'http://farm1.static.flickr.com/94/233574885_8aa7c0a4c1_o.jpg'
+				'http://farm5.static.flickr.com/4080/4906820567_63fb82fa85_b.jpg',
+				'http://farm3.static.flickr.com/2652/4112396574_8e9f7d81a1_b.jpg'
 			];
 
-			$.preload(images, 1, function(last){
+			$.preload(images, 2, function(last){
 
 				for (var i = 0; i < this.length; i++) {
 					$('<img height="200" src="' + this[i] + '" alt="" />').appendTo('body');
