@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example 2</title>
+	<meta charset="utf-8" />
+	<style>
+		div {
+			display: none;
+		}
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="jquery.preload.js"></script>
+	<script>
+
+		$(function(){
+
+			var $this, src;
+
+			$('img').each(function(){
+				$this = $(this);
+				src = $this.data('src');
+				$this.attr('src', src);
+			});
+
+			$('div').preload(function(){
+				$(this).show();
+			});
+
+		});
+
+	</script>
+</head>
+<body>
+
+	<h1><a href="http://github.com/htmlhero/jQuery.preload">jQuery.preload</a> example 2</h1>
+
+	<div>
+		<img height="200" data-src="http://farm4.static.flickr.com/3219/2431886567_c92821aede_o.jpg" src="" alt="" />
+		<img height="200" data-src="http://farm1.static.flickr.com/37/85684217_526797a103_o.jpg" src="" alt="" />
+		<img height="200" data-src="http://farm5.static.flickr.com/4080/4906820567_63fb82fa85_b.jpg" src="" alt="" />
+		<img height="200" data-src="http://farm3.static.flickr.com/2652/4112396574_8e9f7d81a1_b.jpg" src="" alt="" />
+	</div>
+
+</body>
+</html>

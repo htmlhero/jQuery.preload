@@ -1,8 +1,12 @@
-/* jQuery.Preload
- * Created by Andrew Motoshin (http://htmlhero.ru)
+/**
+ * jQuery.Preload
+ * http://github.com/htmlhero/jQuery.preload
  *
- * Version: 1.2.0
- * Requires: jQuery 1.4+
+ * Created by Andrew Motoshin
+ * http://htmlhero.ru
+ *
+ * Version: 1.4.0
+ * Requires: jQuery 1.6+
  *
  */
 
@@ -10,76 +14,99 @@
 
 	$.preload = (function(sources, part, callback){
 
-		var cache = [],
-			caching = function(image){
-				for (var i = 0; i < cache.length; i++) {
-					if (cache[i][0].src === image[0].src) {
-						return cache[i];
-					}
-				}
-				cache.push(image);
-				return image;
-			},
-			proxy = function(sources, callback, last){
-				if ($.isFunction(callback)) {
-					callback.call(sources, last);
-				}
-			};
+		// Plugin cache
+		var cache = [];
 
+		// Wrapper for cache
+		var caching = function(image){
+
+			for (var i = 0; i < cache.length; i++) {
+				if (cache[i].src === image.src) {
+					return cache[i];
+				}
+			}
+
+			cache.push(image);
+			return image;
+
+		};
+
+		// Execute callback
+		var exec = function(sources, callback, last){
+
+			if (typeof callback === 'function') {
+				callback.call(sources, last);
+			}
+
+		};
+
+		// Closure to hide cache
 		return function(sources, part, callback){
 
+			// Check input data
 			if (typeof sources === 'undefined') {
 				return;
 			}
 
-			if (!$.isArray(sources)) {
+			if (typeof sources === 'string') {
 				sources = [sources];
 			}
 
-			if ($.isFunction(part)) {
+			if (arguments.length === 2 && typeof part === 'function') {
 				callback = part;
 				part = 0;
 			}
 
-			var self = arguments.callee,
-				total = sources.length,
-				loaded = 0,
-				next, image;
-
-			var imageLoaded = function(){
-				loaded++;
-				if (loaded === total) {
-					proxy(sources, callback, !next);
-					self(next, part, callback);
-				}
-			};
+			// Split to pieces
+			var total = sources.length,
+				next;
 
 			if (part > 0 && part < total) {
+
 				next = sources.slice(part, total);
 				sources = sources.slice(0, part);
+
+				total = sources.length;
+
 			}
 
-			total = sources.length;
-
+			// If sources array is empty
 			if (!total) {
-				proxy(sources, callback, true);
+				exec(sources, callback, true);
+				return;
 			}
 
-			for (var i = 0; i < total; i++) {
+			// Image loading callback
+			var preload = arguments.callee,
+				count = 0;
+
+			var loaded = function(){
+
+				count++;
+
+				if (count !== total) {
+					return;
+				}
+
+				exec(sources, callback, !next);
+				preload(next, part, callback);
+
+			};
+
+			// Loop sources to preload
+			var image;
+
+			for (var i = 0; i < sources.length; i++) {
 
 				image = new Image();
 				image.src = sources[i];
 
-				image = $(image);
 				image = caching(image);
 
-				if (image[0].complete) {
-					imageLoaded();
+				if (image.complete) {
+					loaded();
 				} else {
-					image.bind({
-						load: imageLoaded,
-						error: imageLoaded
-					});
+					$(image).on('load error', loaded);
 				}
 
 			}
@@ -88,20 +115,35 @@
 
 	})();
 
-	$.fn.preload = function(callback){
+	// Get URLs from DOM elements
+	var getSources = function(items){
 
-		var items = this,
-			sources = [],
+		var sources = [],
 			reg = new RegExp('url\\([\'"]?([^"\'\)]*)[\'"]?\\)', 'i'),
-			background, url;
+			bgs, bg, url, i;
 
-		this.find('*').add(this).each(function(){
+		items = items.find('*').add(items);
 
-			background = $(this).css('backgroundImage');
-			url = reg.exec(background);
+		items.each(function(){
 
-			if (url) {
-				sources.push(url[1]);
+			bgs = $(this).css('backgroundImage');
+			bgs = bgs.split(', ');
+
+			for (i = 0; i < bgs.length; i++) {
+
+				bg = bgs[i];
+
+				if (bg.indexOf('about:blank') !== -1 ||
+					bg.indexOf('data:image') !== -1) {
+					continue;
+				}
+
+				url = reg.exec(bg);
+
+				if (url) {
+					sources.push(url[1]);
+				}
+
 			}
 
 			if (this.nodeName === 'IMG') {
@@ -110,9 +152,18 @@
 
 		});
 
+		return sources;
+
+	};
+
+	$.fn.preload = function(callback){
+
+		var items = this,
+			sources = getSources(items);
+
 		$.preload(sources, function(){
 
-			if ($.isFunction(callback)) {
+			if (typeof callback === 'function') {
 				callback.call(items.get());
 			}
 
