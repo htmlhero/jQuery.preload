@@ -9,6 +9,7 @@ Just include this script after jQuery. Requires jQuery 1.6+.
 ``` html
 <script src='jquery.js'></script>
 <script src='jquery.preload.js'></script>
+```
 
 Parameters
 -----
