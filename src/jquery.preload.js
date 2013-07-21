@@ -5,7 +5,7 @@
  * Created by Andrew Motoshin
  * http://htmlhero.ru
  *
- * Version: 1.4.0
+ * Version: 1.4.1
  * Requires: jQuery 1.6+
  *
  */
@@ -120,25 +120,27 @@
 
 		var sources = [],
 			reg = new RegExp('url\\([\'"]?([^"\'\)]*)[\'"]?\\)', 'i'),
-			bgs, bg, url, i;
+			$this, imageList, image, url, i;
 
 		items = items.find('*').add(items);
 
 		items.each(function(){
 
-			bgs = $(this).css('backgroundImage');
-			bgs = bgs.split(', ');
+			$this = $(this);
 
-			for (i = 0; i < bgs.length; i++) {
+			imageList = $this.css('background-image') + ',' + $this.css('border-image-source');
+			imageList = imageList.split(',');
 
-				bg = bgs[i];
+			for (i = 0; i < imageList.length; i++) {
 
-				if (bg.indexOf('about:blank') !== -1 ||
-					bg.indexOf('data:image') !== -1) {
+				image = imageList[i];
+
+				if (image.indexOf('about:blank') !== -1 ||
+					image.indexOf('data:image') !== -1) {
 					continue;
 				}
 
-				url = reg.exec(bg);
+				url = reg.exec(image);
 
 				if (url) {
 					sources.push(url[1]);
