@@ -17,15 +17,16 @@ Parameters
 There is two ways to use jQuery.preload. By passing path(s):
 
     $.preload(images, [part], [callback]);
-    
-- `images` &mdash; path to image(s), can be array and string.  
-- `part` &mdash; how many images will be preloaded at one time.  
+
+- `images` &mdash; path to image(s), can be array and string.
+- `part` &mdash; how many images will be preloaded at one time.
 - `callback` &mdash; function to be executed after preload one part.
 
 And using method:
 
-	$('#elem').preload([callback]);
+	$('#elem').preload([options], [callback]);
 
+- `options` &mdash; object with properties. Use `recursive: false` to prevent loading inner block images.
 - `callback` &mdash; function to be executed after preload all images.
 
 In this case will be preloaded all images and backgrounds in the `#elem`.
