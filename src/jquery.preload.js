@@ -1,11 +1,11 @@
 /**
  * jQuery.Preload
- * http://github.com/htmlhero/jQuery.preload
+ * https://github.com/htmlhero/jQuery.preload
  *
  * Created by Andrew Motoshin
  * http://htmlhero.ru
  *
- * Version: 1.4.1
+ * Version: 1.5.0
  * Requires: jQuery 1.6+
  *
  */
@@ -116,13 +116,15 @@
 	})();
 
 	// Get URLs from DOM elements
-	var getSources = function(items){
+	var getSources = function(items, options){
 
 		var sources = [],
 			reg = new RegExp('url\\([\'"]?([^"\'\)]*)[\'"]?\\)', 'i'),
 			$this, imageList, image, url, i;
 
-		items = items.find('*').add(items);
+		if (options.recursive) {
+			items = items.find('*').add(items);
+		}
 
 		items.each(function(){
 
@@ -158,14 +160,34 @@
 
 	};
 
-	$.fn.preload = function(callback){
+	$.fn.preload = function(){
+
+		var options, callback;
+
+		// Make arguments flexible
+		if (arguments.length === 1) {
+			if (typeof arguments[0] === 'object') {
+				options = arguments[0];
+			} else {
+				callback = arguments[0];
+			}
+		} else if (arguments.length > 1) {
+			options = arguments[0];
+			callback = arguments[1];
+		}
+
+		// Extend default options
+		options = $.extend({
+			recursive: true,
+			part: 0
+		}, options);
 
 		var items = this,
-			sources = getSources(items);
+			sources = getSources(items, options);
 
-		$.preload(sources, function(){
+		$.preload(sources, options.part, function(last){
 
-			if (typeof callback === 'function') {
+			if (last && typeof callback === 'function') {
 				callback.call(items.get());
 			}
 
