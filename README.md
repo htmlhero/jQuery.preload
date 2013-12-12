@@ -14,7 +14,7 @@ Just include this script after jQuery. Requires jQuery 1.6+.
 Parameters
 -----
 
-There is two ways to use jQuery.preload. By passing path(s):
+There are two ways to use jQuery.preload. By passing path(s):
 
     $.preload(images, [part], [callback]);
 
