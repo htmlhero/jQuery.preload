@@ -34,9 +34,9 @@ In this case will be preloaded all images and backgrounds in the `#elem`.
 Examples
 -----
 
-- [Preloading array](http://dev.htmlhero.ru/jQuery.preload/examples/1.html)
-- [Using data-src attribute](http://dev.htmlhero.ru/jQuery.preload/examples/2.html)
-- [Preload by passing DOM-object](http://dev.htmlhero.ru/jQuery.preload/examples/3.html)
+- [Preloading array](http://htmlhero.github.io/jQuery.preload/examples/1.html)
+- [Using data-src attribute](http://htmlhero.github.io/jQuery.preload/examples/2.html)
+- [Preload by passing DOM-object](http://htmlhero.github.io/jQuery.preload/examples/3.html)
 
 Translations
 -----
