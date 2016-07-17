@@ -14,11 +14,11 @@ Just include this script after jQuery. Requires jQuery 1.6+.
 Parameters
 -----
 
-There are two ways to use jQuery.preload. By passing path(s):
+There are two ways to use jQuery.preload. By passing url(s):
 
     $.preload(images, [part], [callback]);
 
-- `images` &mdash; path to image(s), can be array and string.
+- `images` &mdash; image url(s), can be array and string.
 - `part` &mdash; how many images will be preloaded at one time.
 - `callback` &mdash; function to be executed after preload one part.
 
