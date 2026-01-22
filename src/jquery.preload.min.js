@@ -3,7 +3,7 @@
  * https://github.com/htmlhero/jQuery.preload
  *
  * Created by Andrew Motoshin
- * http://htmlhero.ru
+ * https://htmlhero.ru
  *
  * Version: 1.5.0
  * Requires: jQuery 1.6+
